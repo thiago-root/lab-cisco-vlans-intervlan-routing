@@ -18,7 +18,7 @@ Este projeto foi desenvolvido no Cisco Packet Tracer para demonstrar e comparar 
 ---
 
 ## 📐 Topologia e Arquitetura
-
+![Diagrama da Topologia da Rede](topologia-rede.png)
 ### Cenário A (Acesso Dedicado / Sem Roteamento)
 * **VLAN 10 (Rede 192.168.10.0/24):** PC-A1 e PC-A3
 * **VLAN 20 (Rede 192.168.20.0/24):** PC-A2 e PC-A4
