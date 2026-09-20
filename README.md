@@ -18,36 +18,45 @@ Este projeto foi desenvolvido no Cisco Packet Tracer para demonstrar e comparar 
 ---
 
 ## 📐 Topologia e Arquitetura
+
 ![Diagrama da Topologia da Rede](topologia-rede.png)
+
 ### Cenário A (Acesso Dedicado / Sem Roteamento)
-* **VLAN 10 (Rede 192.168.10.0/24):** PC-A1 e PC-A3
-* **VLAN 20 (Rede 192.168.20.0/24):** PC-A2 e PC-A4
-* **Comportamento:** Comunicação limitada exclusivamente à mesma VLAN através de cabos de acesso dedicados entre os switches `S1A` e `S2A`. Comunicação entre VLAN 10 e VLAN 20 inexistente por ausência de gateway/roteador.
+Como o Cenário A não possui dispositivo de camada 3 (roteador) para atuar como Gateway ou Servidor DHCP, a atribuição de endereços é feita de forma estática em cada host.
+
+* **Tabela de Endereçamento Estático:**
+  * **PC-A1** (conectado ao `S1A` na VLAN 10): IP `192.168.10.11` | Máscara `255.255.255.0` | Gateway: *(em branco)*
+  * **PC-A2** (conectado ao `S1A` na VLAN 20): IP `192.168.20.12` | Máscara `255.255.255.0` | Gateway: *(em branco)*
+  * **PC-A3** (conectado ao `S2A` na VLAN 10): IP `192.168.10.13` | Máscara `255.255.255.0` | Gateway: *(em branco)*
+  * **PC-A4** (conectado ao `S2A` na VLAN 20): IP `192.168.20.14` | Máscara `255.255.255.0` | Gateway: *(em branco)*
+* **Comportamento:** A comunicação ocorre exclusivamente dentro da mesma VLAN através dos cabos de acesso dedicados entre os switches `S1A` e `S2A`. Não há comunicação entre a VLAN 10 e a VLAN 20 por ausência de roteamento.
 
 ### Cenário B (Trunk + Router-on-a-Stick + DHCP)
 * **Subinterface g0/0/0.10:** Gateway `192.168.10.1` (VLAN 10)
 * **Subinterface g0/0/0.20:** Gateway `192.168.20.1` (VLAN 20)
-* **Comportamento:** Enlace tronco 802.1Q entre os switches `S1B` e `S2B` consolidando todo o tráfego. O `Router1` provê os IPs via DHCP para as duas sub-redes e realiza o roteamento de pacotes entre VLANs distintas.
+* **Comportamento:** Enlace tronco 802.1Q entre os switches `S1B` e `S2B` consolidando todo o tráfego. O `Router1` provê os IPs dinamicamente via DHCP para ambas as sub-redes e realiza o roteamento de pacotes entre VLANs distintas.
 
 ---
 
 ## 🧪 Validação dos Testes de Conectividade
 
 ### 1. Comunicação Intra-VLAN - Cenário A (Mesma VLAN)
-Sucesso no disparo de requisições `ping` entre hosts da mesma VLAN no Cenário A (VLAN 10).
+Teste realizado a partir do **PC-A1** disparando pacotes ICMP para o **PC-A3** (`ping 192.168.10.13`).
+* **Resultado:** **Sucesso** (mesma VLAN 10, atravessando o cabo de acesso dedicado entre `S1A` e `S2A`).
 
 ![Teste Mesma VLAN](cenario-a-ping-sucesso.png)
 
 ### 2. Isolamento Inter-VLAN - Cenário A (Sem Roteador)
-Falha/Timeout esperada ao tentar pingar entre a VLAN 10 e a VLAN 20 no Cenário A devido à ausência de dispositivo de Camada 3.
+Teste realizado a partir do **PC-A1** disparando pacotes ICMP para o **PC-A2** (`ping 192.168.20.12`).
+* **Resultado:** **Falha/Timeout** (VLANs separadas e isoladas sem roteador no Cenário A).
 
 ![Teste VLANs Diferentes Sem Roteador](cenario-a-ping-falha.png)
 
 ### 3. Roteamento Inter-VLAN - Cenário B (Com Router-on-a-Stick)
-Sucesso na comunicação entre dispositivos de VLANs distintas (VLAN 10 e VLAN 20) através do roteamento via subinterfaces no `Router1`. Nota-se a perda inicial do 1º pacote devido à resolução de endereço via protocolo **ARP**, seguida de 100% de êxito nos pacotes subsequentes.
+Teste realizado no **PC-B1** (VLAN 10 | IP `192.168.10.2`) disparando pacotes ICMP para o **PC-B2** (VLAN 20 | IP `192.168.20.2`).
+* **Resultado:** **Sucesso**. Demonstra a comunicação entre dispositivos de VLANs distintas através do roteamento via subinterfaces no `Router1`. Nota-se a perda inicial do 1º pacote devido à resolução de endereço via protocolo **ARP**, seguida de 100% de êxito nos pacotes subsequentes.
 
 ![Teste Roteamento Inter-VLAN Cenário B](cenario-b-ping-sucesso.png)
-
 ---
 
 ## 📁 Como executar o projeto
