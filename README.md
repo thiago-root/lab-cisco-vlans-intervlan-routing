@@ -19,7 +19,7 @@ Este projeto foi desenvolvido no Cisco Packet Tracer para demonstrar e comparar 
 
 ## 📐 Topologia e Arquitetura
 
-![Diagrama da Topologia da Rede](topologia-rede.png)
+![Diagrama da Topologia da Rede](01_topologia.png)
 
 ### Cenário A (Acesso Dedicado / Sem Roteamento)
 Como o Cenário A não possui dispositivo de camada 3 (roteador) para atuar como Gateway ou Servidor DHCP, a atribuição de endereços é feita de forma estática em cada host.
