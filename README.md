@@ -34,7 +34,7 @@ Como o Cenário A não possui dispositivo de camada 3 (roteador) para atuar como
 ### Cenário B (Trunk + Router-on-a-Stick + DHCP)
 * **Subinterface g0/0/0.10:** Gateway `192.168.10.1` (VLAN 10)
 * **Subinterface g0/0/0.20:** Gateway `192.168.20.1` (VLAN 20)
-* **Comportamento:** Enlace tronco 802.1Q entre os switches `S1B` e `S2B` consolidando todo o tráfego. O `Router1` provê os IPs dinamicamente via DHCP para ambas as sub-redes e realiza o roteamento de pacotes entre VLANs distintas.
+* **Comportamento:** Enlace tronco 802.1Q entre os switches `S1B` e `S2B` consolidando todo o tráfego. O `RTR-CORE-01` provê os IPs dinamicamente via DHCP para ambas as sub-redes e realiza o roteamento de pacotes entre VLANs distintas.
 
 ---
 
@@ -54,7 +54,7 @@ Teste realizado a partir do **PC-A1** disparando pacotes ICMP para o **PC-A2** (
 
 ### 3. Roteamento Inter-VLAN - Cenário B (Com Router-on-a-Stick)
 Teste realizado no **PC-B1** (VLAN 10 | IP `192.168.10.2`) disparando pacotes ICMP para o **PC-B2** (VLAN 20 | IP `192.168.20.2`).
-* **Resultado:** **Sucesso**. Demonstra a comunicação entre dispositivos de VLANs distintas através do roteamento via subinterfaces no `Router1`. Nota-se a perda inicial do 1º pacote devido à resolução de endereço via protocolo **ARP**, seguida de 100% de êxito nos pacotes subsequentes.
+* **Resultado:** **Sucesso**. Demonstra a comunicação entre dispositivos de VLANs distintas através do roteamento via subinterfaces no `RTR-CORE-01`. Nota-se a perda inicial do 1º pacote devido à resolução de endereço via protocolo **ARP**, seguida de 100% de êxito nos pacotes subsequentes.
 
 ![Teste Roteamento Inter-VLAN Cenário B](cenario-b-ping-sucesso.png)
 ---
